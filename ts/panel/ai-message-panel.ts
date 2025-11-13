@@ -1,142 +1,159 @@
-import { ItemView, WorkspaceLeaf, Notice } from 'obsidian';
-import AutoTaskPanelWithAI from './main';
-import { AIMessage } from './types';
+import { App } from 'obsidian';
 
-export class AIMessagePanel extends ItemView {
-  plugin: AutoTaskPanelWithAI;
+export class AI_Message_Panel {
+	private app: App;
+	private panel: HTMLElement;
+	private isOpen: boolean = false;
 
-  constructor(leaf: WorkspaceLeaf, plugin: AutoTaskPanelWithAI) {
-    super(leaf);
-    this.plugin = plugin;
-  }
+	constructor(app: App) {
+		this.app = app;
+		this.panel = this.createPanel();
+		this.appendPanelToDOM();
+	}
 
-  getViewType(): string {
-    return "ai-message-panel";
-  }
+	private createPanel(): HTMLElement {
+		const panel = document.createElement('div');
+		panel.id = 'ai-message-panel';
+		panel.className = 'ai-message-panel';
+		panel.style.display = 'none';
 
-  getDisplayText(): string {
-    return "AI消息面板";
-  }
+		// 创建面板头部
+		const header = document.createElement('div');
+		header.className = 'ai-message-panel-header';
+		header.innerHTML = `<svg class="ai-message-panel-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+			<path d="M2 17l10 5 10-5"></path>
+			<path d="M2 12l10 5 10-5"></path>
+		</svg><h3>AI 消息面板</h3><button id="ai-message-panel-close">×</button>`;
 
-  getIcon(): string {
-    return "message-square";
-  }
+		// 创建消息容器
+		const messageContainer = document.createElement('div');
+		messageContainer.className = 'ai-message-container';
 
-  async onOpen() {
-    const container = this.containerEl.children[1];
-    container.empty();
+		// 创建输入区域
+		const inputArea = document.createElement('div');
+		inputArea.className = 'ai-message-input-area';
+		inputArea.innerHTML = `
+			<textarea id="ai-message-input" placeholder="请输入您的问题或指令..."></textarea>
+			<button id="ai-message-send">发送</button>
+			<button id="ai-message-copy">复制</button>
+		`;
 
-    // 创建消息面板标题
-    const title = container.createEl("h2", { text: "AI消息面板" });
-    title.className = "ai-message-panel-title";
+		// 组合面板内容
+		panel.appendChild(header);
+		panel.appendChild(messageContainer);
+		panel.appendChild(inputArea);
 
-    // 创建消息列表容器
-    const messagesContainer = container.createEl("div", { cls: "ai-messages-container" });
-    messagesContainer.id = "ai-messages-container";
+		// 添加事件监听
+		this.addEventListeners(panel);
 
-    // 创建用户输入容器
-    const inputContainer = container.createEl("div", { cls: "ai-message-input-container" });
+		return panel;
+	}
 
-    // 创建文本输入框
-    const inputText = inputContainer.createEl("textarea", {
-      cls: "ai-message-input",
-      placeholder: "输入问题或请求..."
-    });
+	private appendPanelToDOM() {
+		const workspaceContainer = document.querySelector('.workspace-leaf-content');
+		if (workspaceContainer) {
+			workspaceContainer.appendChild(this.panel);
+		}
+	}
 
-    // 创建发送按钮
-    const sendBtn = inputContainer.createEl("button", { text: "发送" });
-    sendBtn.className = "ai-message-send-btn";
+	private addEventListeners(panel: HTMLElement) {
+		// 关闭按钮事件
+		const closeButton = panel.querySelector('#ai-message-panel-close');
+		if (closeButton) {
+			closeButton.addEventListener('click', () => this.close());
+		}
 
-    // 添加发送按钮点击事件
-    sendBtn.addEventListener("click", () => {
-      const message = inputText.value.trim();
-      if (message) {
-        this.onUserInput(message);
-        inputText.value = "";
-      }
-    });
+		// 发送按钮事件
+		const sendButton = panel.querySelector('#ai-message-send');
+		if (sendButton) {
+			sendButton.addEventListener('click', () => this.send());
+		}
 
-    // 添加回车键发送功能
-    inputText.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        const message = inputText.value.trim();
-        if (message) {
-          this.onUserInput(message);
-          inputText.value = "";
-        }
-      }
-    });
+		// 输入区域回车事件
+		const input = panel.querySelector('#ai-message-input') as HTMLTextAreaElement;
+		if (input) {
+			input.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' && e.ctrlKey) {
+					this.send();
+				}
+			});
+		}
 
-    // 渲染历史消息
-    this.renderMessages();
-  }
+		// 复制按钮事件
+		const copyButton = panel.querySelector('#ai-message-copy');
+		if (copyButton) {
+			copyButton.addEventListener('click', () => this.copy());
+		}
+	}
 
-  async onClose() {
-    // 清理资源
-  }
+	public open() {
+		this.panel.style.display = 'block';
+		this.isOpen = true;
+	}
 
-  // 渲染消息列表
-  private renderMessages() {
-    const messagesContainer = document.getElementById("ai-messages-container");
-    if (!messagesContainer) return;
+	public close() {
+		this.panel.style.display = 'none';
+		this.isOpen = false;
+	}
 
-    messagesContainer.empty();
+	public toggle() {
+		if (this.isOpen) {
+			this.close();
+		} else {
+			this.open();
+		}
+	}
 
-    // 显示历史消息
-    for (const message of this.plugin.settings.aiMessageHistory) {
-      this.addMessageToDisplay(message.text, message.sender);
-    }
-  }
+	public removePanel() {
+		if (this.panel.parentNode) {
+			this.panel.parentNode.removeChild(this.panel);
+			console.log('AI Message Panel removed from DOM');
+		}
+	}
 
-  // 将消息添加到显示中
-  private addMessageToDisplay(text: string, sender: "user" | "ai") {
-    const messagesContainer = document.getElementById("ai-messages-container");
-    if (!messagesContainer) return;
+	private send() {
+		// 发送消息逻辑
+		const input = this.panel.querySelector('#ai-message-input') as HTMLTextAreaElement;
+		const message = input.value.trim();
+		if (message) {
+			// 清空输入框
+			input.value = '';
+			// 添加用户消息到容器
+			this.addMessageToContainer(message, 'user');
+			// 模拟AI响应
+			setTimeout(() => {
+				this.addMessageToContainer('这是一个模拟的AI响应。', 'ai');
+			}, 1000);
+		}
+	}
 
-    const messageElement = messagesContainer.createEl("div", {
-      cls: `ai-message ${sender}`
-    });
+	private copy() {
+		// 复制消息逻辑
+		const messageContainer = this.panel.querySelector('.ai-message-container');
+		if (messageContainer) {
+			const messages = messageContainer.querySelectorAll('.ai-message');
+			let text = '';
+			messages.forEach(msg => {
+				text += msg.textContent || '';
+				text += '\n';
+			});
+			navigator.clipboard.writeText(text).then(() => {
+				// 可以添加复制成功提示
+				console.log('复制成功');
+			});
+		}
+	}
 
-    const messageContent = messageElement.createEl("div", {
-      cls: "ai-message-content"
-    });
-
-    messageContent.innerHTML = text;
-
-    // 滚动到最新消息
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  }
-
-  // 处理用户输入
-  private onUserInput(text: string) {
-    // 将用户消息添加到显示中
-    this.addMessageToDisplay(text, "user");
-
-    // 将用户消息保存到历史记录
-    this.plugin.settings.aiMessageHistory.push({
-      text,
-      sender: "user",
-      timestamp: Date.now()
-    });
-    this.plugin.saveSettings();
-
-    // 生成AI回复
-    // 调用插件的 AI 响应生成逻辑（请确保 main.ts 中已实现对应方法或替换为实际调用）
-    (this.plugin as any).generateAIResponse?.(text);
-  }
-
-  // 处理生成的AI消息
-  onMessageGenerated(text: string) {
-    // 将AI消息添加到显示中
-    this.addMessageToDisplay(text, "ai");
-
-    // 将AI消息保存到历史记录
-    this.plugin.settings.aiMessageHistory.push({
-      text,
-      sender: "ai",
-      timestamp: Date.now()
-    });
-    this.plugin.saveSettings();
-  }
+	private addMessageToContainer(message: string, type: 'user' | 'ai') {
+		const messageContainer = this.panel.querySelector('.ai-message-container');
+		if (messageContainer) {
+			const messageElement = document.createElement('div');
+			messageElement.className = `ai-message ai-message-${type}`;
+			messageElement.innerHTML = `<p>${message}</p>`;
+			messageContainer.appendChild(messageElement);
+			// 滚动到底部
+			messageContainer.scrollTop = messageContainer.scrollHeight;
+		}
+	}
 }
