@@ -1,4 +1,4 @@
-- 更新声明：这个插件是为了整合我所要做的事项所开发的自用插件，一些操作的设计会更贴合我的习惯（包括插件所使用的 **语言将以中文为主** 、暂时只会使用 Deepseek 的解释模型）。我会持续根据我自身的需求进行优化，如果时间充裕，我会根据社区反馈进行调整。
+- 更新声明：这个插件所使用的 **语言将以中文为主** 、并且暂时只会使用 Deepseek 的解释模型。我会持续根据我自身的需求进行优化，如果时间充裕，我会根据社区反馈进行调整。
 - 这个插件的设计目的是：针对我这样不习惯使用类似 Task 那样严格定义的语法的人，通过整合 AI 深度思考，以自动化的列举每日需完成的事项。
 - 在使用所有功能前，你需要注册一个 Deepseek 开放平台账号，获取到 API Key，并充值一定的金额。传送门：[Deepseek 开放平台](https://platform.deepseek.com/register)
 - 主要功能：触发式生成。此功能可以根据你设置的定时任务，自动读取任务集文件夹发送向 AI 让其进行任务整合，将结果写入当天的日记文件中。
@@ -7,11 +7,11 @@
 
 ## 自动创建适应的文件夹结构
 - 在插件打开或库打开时，这些文件结构会自动创建，你可以指定其他文件结构用于替代它们
-- 仅有设置为任务集内的任务可以被识别
+- 仅有设置为任务集内的任务会被发送向 AI 进行处理
 ```
 _Root/plugin/Task-AI/
 _Root/plugin/Task-AI/prompts/
-_Root/plugin/Task-AI/prompts/TaskAIDefaultPrompt.md
+_Root/plugin/Task-AI/prompts/default.md
 _Root/plugin/Task-AI/history/
 Task-AI 任务集/
 ```
@@ -35,3 +35,42 @@ Task-AI 任务集/
 - AI 信息将自动以时间戳形式写入插件的历史消息文件夹
 - 你也可以通过点击按钮，以插入一段自定义的 AI 问询。
 - 被设定为静默输入的 AI生成指令不会在此处展示
+
+# English README
+- Updated statement: This is the **language general and Chinese literature main**, and the Deepseek solution model used at the time. We will continue to improve our own needs and fulfill our own needs, fill our time, and adjust our society's progress.
+- The purpose of this design is to use the following: Tasks that are specific to the language, generally consistent with AI deep thinking, and automated sequentially to complete each day's needs.
+- Before using the function, you need to pay attention to one Deepseek open platform purchase number, get the API key, and charge the fixed price. ＠Shipping Gate: [Deepseek Opening Platform](https://platform.deepseek.com/register)
+- Main ability: Tactile generation. This function can be used to set up a fixed time assignment, auto-manage assignment assignment collection, and send an AI review of its operations and assignment assignments, and copy the future results into the current daily record. 
+- Outside of this, if you have a flomo flat board, you can use the flomo API to create an item, and after generating the message, the driver can send the result to the flomo flat board, and it is convenient to view the terminal.
+- Helping function: Keep the AI ​​running, save the format from time to time. If you want to open a message and send a message, please select the selected text and continue reading the AI.
+
+## Automobile construction option text structure
+- When opening or editing existing articles, we may automatically construct the article structure, or you may designate another article structure for use as a substitute.
+- You have set up your own assignments for internal assignments for AI operations.
+````
+_Root/plugin/Task-AI/
+_Root/plugin/Task-AI/prompts/
+_Root/plugin/Task-AI/prompts/default.md
+_Root/plugin/Task-AI/history/
+Task-AI task collection/
+````
+
+## AI placement
+- The following functions are required by Deepseek api , and use the thinking model `deepseek-reasoner`. 
+- We maintain the same strategy used by AI, so we have revised the actual performance of the AI, including the content of the strategy we designed. **Provide matching information** **Alternatives may be designed to suit different requirements for formalization tools**. 
+- However, if there is a demand for it, it is possible to use it for free. 
+- We are responsible for the exclusion of information due to private demand, which may be accepted or delivered to you, if you have any questions, or if you do not need to use the service.
+
+## Tactile generation
+- This feature allows you to set up your own fixed time assignments, auto-manage your assignments, and send them to AI in order to coordinate your work, and copy the future results into the current daily record. 
+- Demand opening obsidian's daily record and copying AI generated information
+- After locating Flomo API, you can send the information manually or automatically send it to Flomo, then check the transfer end.
+- Yuyu AI fabrication, you can design or record memory without any additional costs, which means that you can design the periodic time. 
+- **Use AI fabrication，You can use natural language form** Freely set the time, item etc. can be separated and not required. 
+- For example, if you wish to move forward at the end of the second month of each month, you will be able to use the normal time designation, write your own words, further design, change usage, and the result will be abstracted and forgotten. Use AI, you don't have to worry about the cost of time, so you can understand it yourself.
+
+## AI News
+- The AI ​​message is on the right side, so you can see the information that the AI ​​generates, and the information that follows.
+- AI information general automatic time-cut format copying information historical news articles
+- You can also pass through the following points, and enter the first step in the AI ​​question.
+- The AI ​​generation command will not be displayed at this time.

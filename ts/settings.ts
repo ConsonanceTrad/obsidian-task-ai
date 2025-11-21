@@ -58,7 +58,6 @@ export class TaskAISettingsTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
-		containerEl.createEl('h2', { text: 'Task AI 插件设置' });
 
 		// 创建标签页容器
 		const tabsContainer = containerEl.createEl('div', { cls: 'setting-tabs' });
