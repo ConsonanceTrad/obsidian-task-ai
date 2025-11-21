@@ -30,12 +30,6 @@ Task-AI 任务集/
 	- **使用 AI 协作，你可以以自然语言形式** 自由编辑时间、项目等区别标签而不需要去注重格式。
 	- 例如，你希望每月第二个周末进行一次大清扫，如果使用正常时间标签，就我的经验而言，这很难设计，更难使用，甚至会因为太过抽象而遗忘标准。使用 AI ，你将不需要费时间记忆那些格式，以你自己觉得能够说清的方式来说就可以。
 
-##  AI 消息
-- AI消息为默认在右侧边栏展开的视图，你可以在此处阅览AI为你生成的信息，并通过点击消息将其复制。
-- AI 信息将自动以时间戳形式写入插件的历史消息文件夹
-- 你也可以通过点击按钮，以插入一段自定义的 AI 问询。
-- 被设定为静默输入的 AI生成指令不会在此处展示
-
 # English README
 - Updated statement: This is the **language general and Chinese literature main**, and the Deepseek solution model used at the time. We will continue to improve our own needs and fulfill our own needs, fill our time, and adjust our society's progress.
 - The purpose of this design is to use the following: Tasks that are specific to the language, generally consistent with AI deep thinking, and automated sequentially to complete each day's needs.
@@ -68,9 +62,3 @@ Task-AI task collection/
 - Yuyu AI fabrication, you can design or record memory without any additional costs, which means that you can design the periodic time. 
 - **Use AI fabrication，You can use natural language form** Freely set the time, item etc. can be separated and not required. 
 - For example, if you wish to move forward at the end of the second month of each month, you will be able to use the normal time designation, write your own words, further design, change usage, and the result will be abstracted and forgotten. Use AI, you don't have to worry about the cost of time, so you can understand it yourself.
-
-## AI News
-- The AI ​​message is on the right side, so you can see the information that the AI ​​generates, and the information that follows.
-- AI information general automatic time-cut format copying information historical news articles
-- You can also pass through the following points, and enter the first step in the AI ​​question.
-- The AI ​​generation command will not be displayed at this time.
