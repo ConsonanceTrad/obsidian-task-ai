@@ -192,7 +192,7 @@ var TaskAISettingsTab = class extends import_obsidian.PluginSettingTab {
         const actionCell = row.createEl("td", { cls: "timed-queries-cell" });
         const testButton = actionCell.createEl("button", { cls: "timed-queries-test-button" });
         testButton.createEl("span", { cls: "obsidian-icon", text: "\u25B6" });
-        testButton.setAttribute("aria-label", "Try executing the rule");
+        testButton.setAttribute("aria-label", "Executing the rule once");
         testButton.addEventListener("click", async () => {
           new import_obsidian.Notice("Start execution of timed query.");
           this.plugin.executeTimedQuery(query);

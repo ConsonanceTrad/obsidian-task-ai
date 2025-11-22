@@ -1,7 +1,7 @@
 {
   "name": "auto-task-panel-with-ai",
   "version": "1.0.0",
-  "description": "Obsidian 自动任务面板，带有AI辅助功能",
+  "description": "",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
